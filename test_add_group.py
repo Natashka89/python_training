@@ -19,9 +19,6 @@ class test_add_group(unittest.TestCase):
         success = True
         wd = self.wd
         wd.get("http://localhost/addressbook/")
-        if wd.find_element_by_name("user").get_attribute("value") != :
-            success = False
-            print("verifyElementValue failed")
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
