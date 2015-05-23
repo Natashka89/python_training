@@ -19,7 +19,9 @@ class test_add_contact(unittest.TestCase):
         wd = self.wd
         self.move_to_url(wd)
         self.login(wd,username = "admin", password = "secret")
-        self.test_add_new_contact(wd, Contact("first", "middle", "last", "nick", "company", "adress", "485", "238", "432", "123"))
+        self.init_contact_creation_form(wd)
+        self.fill_contact_creation_form(wd, Contact("first", "middle", "last", "nick", "company", "adress", "485", "238", "432", "123"))
+        self.submit_contact_creation(wd)
         self.return_to_home_page(wd)
         self.logout(wd)
 
@@ -27,7 +29,9 @@ class test_add_contact(unittest.TestCase):
         wd = self.wd
         self.move_to_url(wd)
         self.login(wd ,username = "admin", password = "secret")
-        self.test_add_new_contact(wd, Contact("", "", "", "", "", "", "", "", "", ""))
+        self.init_contact_creation_form(wd)
+        self.fill_contact_creation_form(wd, Contact("", "", "", "", "", "", "", "", "", ""))
+        self.submit_contact_creation(wd)
         self.return_to_home_page(wd)
         self.logout(wd)
 
@@ -37,9 +41,7 @@ class test_add_contact(unittest.TestCase):
     def return_to_home_page(self, wd):
         wd.find_element_by_link_text("home page").click()
 
-    def test_add_new_contact(self, wd, contact):
-        # init contact creation
-        wd.find_element_by_link_text("add new").click()
+    def fill_contact_creation_form(self, wd, contact):
         # fill contact form
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
@@ -71,8 +73,14 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("fax").click()
         wd.find_element_by_name("fax").clear()
         wd.find_element_by_name("fax").send_keys(contact.fax)
-        # submit contact creation
+
+    def submit_contact_creation(self, wd):
+        # submit_contact_creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+
+    def init_contact_creation_form(self, wd):
+        # init_contact_creation_form
+        wd.find_element_by_link_text("add new").click()
 
     def login(self, wd, username, password):
         wd.find_element_by_name("user").click()
