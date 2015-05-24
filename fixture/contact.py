@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Администратор'
+from fixture.class_manager import Manager
 
-class ContactHelper():
-
-    def __init__(self, app_contact):
-        self.app_contact = app_contact
+class ContactHelper(Manager):
 
     def creation(self, contact):
-        wd = self.app_contact.wd
+        wd = self.app.wd
         self.init_contact_creation_form()
         # fill contact form
         wd.find_element_by_name("firstname").click()
@@ -43,12 +41,12 @@ class ContactHelper():
         self.submit_contact_creation()
 
     def submit_contact_creation(self):
-        wd = self.app_contact.wd
+        wd = self.app.wd
         # submit_contact_creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
-        self.app_contact.return_to_home_page()
+        self.app.return_to_home_page()
 
     def init_contact_creation_form(self):
-        wd = self.app_contact.wd
+        wd = self.app.wd
         # init_contact_creation_form
         wd.find_element_by_link_text("add new").click()
