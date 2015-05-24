@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from selenium.webdriver.firefox.webdriver import WebDriver
-import unittest
+import pytest
 from contact import Contact
+from application_contact import Application_contact
 
 def is_alert_present(wd):
     try:
@@ -10,92 +10,25 @@ def is_alert_present(wd):
     except:
         return False
 
-class test_add_contact(unittest.TestCase):
-    def setUp(self):
-        self.wd = WebDriver()
-        self.wd.implicitly_wait(60)
-    
-    def test_add_contact(self):
-        wd = self.wd
-        self.move_to_url(wd)
-        self.login(wd,username = "admin", password = "secret")
-        self.init_contact_creation_form(wd)
-        self.fill_contact_creation_form(wd, Contact("first", "middle", "last", "nick", "company", "adress", "485", "238", "432", "123"))
-        self.submit_contact_creation(wd)
-        self.return_to_home_page(wd)
-        self.logout(wd)
+@pytest.fixure
+def app_contact(request):
+    fixture = Application_contact()
+    request.addfinalizar(fixture.destroy)
+    return fixture
 
-    def test_add_empty_contact(self):
-        wd = self.wd
-        self.move_to_url(wd)
-        self.login(wd ,username = "admin", password = "secret")
-        self.init_contact_creation_form(wd)
-        self.fill_contact_creation_form(wd, Contact("", "", "", "", "", "", "", "", "", ""))
-        self.submit_contact_creation(wd)
-        self.return_to_home_page(wd)
-        self.logout(wd)
 
-    def logout(self, wd):
-        wd.find_element_by_link_text("Logout").click()
+def test_add_contact(app_contact):
+    app_contact.login(username = "admin", password = "secret")
+    app_contact.init_contact_creation_form()
+    app_contact.fill_contact_creation_form(Contact("first", "middle", "last", "nick", "company", "adress", "485", "238", "432", "123"))
+    app_contact.submit_contact_creation()
+    app_contact.logout()
 
-    def return_to_home_page(self, wd):
-        wd.find_element_by_link_text("home page").click()
+def test_add_empty_contact(app_contact):
+    app_contact.login(username = "admin", password = "secret")
+    app_contact.init_contact_creation_form()
+    app_contact.fill_contact_creation_form(Contact("", "", "", "", "", "", "", "", "", ""))
+    app_contact.submit_contact_creation()
+    app_contact.logout()
 
-    def fill_contact_creation_form(self, wd, contact):
-        # fill contact form
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.first)
-        wd.find_element_by_name("middlename").click()
-        wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys(contact.middle)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(contact.last)
-        wd.find_element_by_name("nickname").click()
-        wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys(contact.nick)
-        wd.find_element_by_name("company").click()
-        wd.find_element_by_name("company").clear()
-        wd.find_element_by_name("company").send_keys(contact.company)
-        wd.find_element_by_name("address").click()
-        wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(contact.adress)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(contact.home)
-        wd.find_element_by_name("mobile").click()
-        wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys(contact.mobile)
-        wd.find_element_by_name("work").click()
-        wd.find_element_by_name("work").clear()
-        wd.find_element_by_name("work").send_keys(contact.work)
-        wd.find_element_by_name("fax").click()
-        wd.find_element_by_name("fax").clear()
-        wd.find_element_by_name("fax").send_keys(contact.fax)
 
-    def submit_contact_creation(self, wd):
-        # submit_contact_creation
-        wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
-
-    def init_contact_creation_form(self, wd):
-        # init_contact_creation_form
-        wd.find_element_by_link_text("add new").click()
-
-    def login(self, wd, username, password):
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_css_selector("input[type=\"submit\"]").click()
-
-    def move_to_url(self, wd):
-        wd.get("http://localhost/addressbook/")
-
-    def tearDown(self):
-        self.wd.quit()
-
-if __name__ == '__main__':
-    unittest.main()
