@@ -1,4 +1,5 @@
-__author__ = 'Администратор'
+# -*- coding: utf-8 -*-
+__author__ = 'РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ'
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 
@@ -18,6 +19,7 @@ class Application_contact:
 
     def fill_contact_creation_form(self, contact):
         wd = self.wd
+        self.init_contact_creation_form()
         # fill contact form
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
@@ -49,6 +51,7 @@ class Application_contact:
         wd.find_element_by_name("fax").click()
         wd.find_element_by_name("fax").clear()
         wd.find_element_by_name("fax").send_keys(contact.fax)
+        self.submit_contact_creation()
 
     def submit_contact_creation(self):
         wd = self.wd
