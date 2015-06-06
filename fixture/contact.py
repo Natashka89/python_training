@@ -7,6 +7,7 @@ class ContactHelper(Manager):
 
     def creation(self, contact):
         wd = self.app.wd
+        wd.return_to_home_page()
         self.init_contact_creation_form()
         # fill contact form
         self.fill_contact_form(contact)
@@ -14,6 +15,7 @@ class ContactHelper(Manager):
 
     def delete_first_contact(self):
         wd = self.app.wd
+        self.return_to_home_page()
         self.select_first_contact()
         #submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
@@ -41,6 +43,7 @@ class ContactHelper(Manager):
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
+        self.return_to_home_page()
         self.select_first_contact()
         self.edit_contact_creation_form()
         # fill modification form
@@ -80,3 +83,8 @@ class ContactHelper(Manager):
     def count(self):
         wd = self.app.wd
         return len(wd.find_elements_by_xpath("//a[contains(@href,'edit.php?id')]"))
+
+    def return_to_home_page(self):
+        wd = self.app.wd
+        if not (wd.current_url.endswith("/addressbook/")):
+            wd.find_element_by_link_text("home").click()
