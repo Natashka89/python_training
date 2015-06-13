@@ -7,7 +7,7 @@ class ContactHelper(Manager):
 
     def creation(self, contact):
         wd = self.app.wd
-        wd.return_to_home_page()
+        self.return_to_home_page()
         self.init_contact_creation_form()
         # fill contact form
         self.fill_contact_form(contact)
