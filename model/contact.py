@@ -3,7 +3,7 @@ __author__ = 'Администратор'
 
 class Contact:
 
-    def __init__(self, first= None, middle= None, last= None, nick= None, company= None, adress= None, home= None, mobile= None, work= None, fax= None):
+    def __init__(self, first= None, middle= None, last= None, nick= None, company= None, adress= None, home= None, mobile= None, work= None, fax= None, id=None):
         self.first = first
         self.middle = middle
         self.last = last
@@ -14,3 +14,4 @@ class Contact:
         self.mobile = mobile
         self.work = work
         self.fax = fax
+        self.id = id

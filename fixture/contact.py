@@ -2,6 +2,7 @@
 __author__ = 'Администратор'
 from fixture.class_manager import Manager
 from selenium.webdriver.common.alert import Alert
+from model.contact import Contact
 
 class ContactHelper(Manager):
 
@@ -72,6 +73,7 @@ class ContactHelper(Manager):
 
     def delete_button_contact(self):
         wd = self.app.wd
+        self.return_to_home_page()
         self.select_first_contact()
         self.edit_contact_creation_form()
         wd.find_element_by_xpath("//input[contains(@value,'Delete')]").click()
@@ -88,3 +90,13 @@ class ContactHelper(Manager):
         wd = self.app.wd
         if not (wd.current_url.endswith("/addressbook/")):
             wd.find_element_by_link_text("home").click()
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.return_to_home_page()
+        contacts = []
+        for element in wd.find_elements_by_xpath("//input[contains(@type,'checkbox')]"):
+            text = element.text
+            id = element.find_element_by_xpath("//input[contains(@type,'checkbox')]").get_attribute("value")
+            contacts.append(Contact(last=text,id=id))
+        return contacts
