@@ -15,3 +15,9 @@ class Contact:
         self.work = work
         self.fax = fax
         self.id = id
+
+    def __repr__(self):
+        return "%s:%s:%s" % (self.id, self.last, self.first)
+
+    def __eq__(self, other):
+        return (self.id == other.id and self.last == other.last and self.first == other.first)
