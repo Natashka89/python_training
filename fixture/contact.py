@@ -95,8 +95,9 @@ class ContactHelper(Manager):
         wd = self.app.wd
         self.return_to_home_page()
         contacts = []
-        for element in wd.find_elements_by_xpath("//input[contains(@type,'checkbox')]"):
-            text = element.text
-            id = element.find_element_by_xpath("//input[contains(@type,'checkbox')]").get_attribute("value")
-            contacts.append(Contact(last=text,id=id))
+        for element in wd.find_elements_by_xpath("//input[contains(@name,'selected[]')]"):
+            text_first = wd.find_element_by_xpath("//td[input[contains(@name,'selected[]')]]/following-sibling::td").text
+            text_last = wd.find_element_by_xpath("//td[input[contains(@name,'selected[]')]]/following-sibling::td[2]").text
+            id = element.find_element_by_xpath("//input[contains(@name,'selected[]')]").get_attribute("value")
+            contacts.append(Contact(first = text_first, last = text_last,id = id))
         return contacts
