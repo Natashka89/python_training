@@ -12,7 +12,7 @@ from model.contact import Contact
     #assert len(old_contacts) == len(new_contacts)
 
 def test_modify_group_first_name(app):
-    if app.contact.count == 0:
+    if app.contact.count() == 0:
         app.contact.create(Contact(first="Last contact first name"))
     old_contacts = app.contact.get_contact_list()
     contact = Contact(first = "New contact first name")
