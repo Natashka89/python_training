@@ -17,7 +17,7 @@ def test_modify_group_first_name(app):
         app.contact.create(Contact(first="Last contact first name"))
     old_contacts = app.contact.get_contact_list()
     index = randrange(len(old_contacts))
-    contact = Contact(first = "New contact first name")
+    contact = Contact(first = "New contact first name", last = "New contact last name")
     contact.id = old_contacts[index].id
     app.contact.modify_contact_by_index(index, contact)
     new_contacts = app.contact.get_contact_list()
