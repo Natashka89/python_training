@@ -3,13 +3,24 @@ from model.contact import Contact
 import random
 import string
 import os.path
-import json
+import jsonpickle
+import getopt
+import sys
 
+try:
+    opts, args = getopt.getopt(sys.argv[1:],"n:f:",["number of contacts]", "file"])
+except getopt.GetoptError as err:
+    getopt.usage()
+    sys.exit(2)
 
-constant = [
-    Contact(first="first1", middle="middle1", last="last1"),
-    Contact(first="first2", middle="middle2", last="last2"),
-]
+n = 5
+f = "data/contacts.json"
+
+for o, a in opts:
+    if o == "-n":
+        n = int(a)
+    elif 0 == "-f":
+        f = a
 
 def random_string(prefix, maxlen):
     symbols = string.ascii_letters+string.digits+string.punctuation+" "*10
@@ -27,7 +38,9 @@ testdata = [Contact(first = "", last = "", middle = "", home = "", mobile = "", 
     for i in range(5)
 ]
 
-file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/contact.json")
 
-with open(file, "w") as f:
-    f.write(json.dumps(testdata, default = lambda x: x.__dict__, indent = 2))
+file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", f)
+
+with open(file, "w") as out:
+    jsonpickle.set_encoder_options("json", indent = 2)
+    out.write(jsonpickle.encode(testdata))
