@@ -15,7 +15,6 @@ class Contact:
         self.home = home
         self.mobile = mobile
         self.work = work
-        self.fax = fax
         self.all_emails_from_home_page = all_emails_from_home_page
         self.email1 = email1
         self.email2 = email2

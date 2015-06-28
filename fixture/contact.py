@@ -72,7 +72,6 @@ class ContactHelper(Manager):
         self.change_field_value("home", contact.home)
         self.change_field_value("mobile", contact.mobile)
         self.change_field_value("work", contact.work)
-        self.change_field_value("fax", contact.fax)
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -146,13 +145,12 @@ class ContactHelper(Manager):
         home = wd.find_element_by_name("home").get_attribute("value")
         work = wd.find_element_by_name("work").get_attribute("value")
         mobile = wd.find_element_by_name("mobile").get_attribute("value")
-        fax = wd.find_element_by_name("fax").get_attribute("value")
         email1 = wd.find_element_by_name("email").get_attribute("value")
         email2 = wd.find_element_by_name("email2").get_attribute("value")
         email3 = wd.find_element_by_name("email3").get_attribute("value")
         return Contact(first = firstname, last = lastname, id = id,
                        home = home, work = work,
-                       mobile = mobile, fax = fax,
+                       mobile = mobile,
                        email1 = email1, email2 = email2, email3 = email3)
 
     def get_contact_from_view_page(self, index):
@@ -162,6 +160,5 @@ class ContactHelper(Manager):
         home = re.search("H: (.*)",text).group(1)
         work = re.search("W: (.*)",text).group(1)
         mobile = re.search("M: (.*)",text).group(1)
-        fax = re.search("F: (.*)",text).group(1)
         return Contact(home = home, work = work,
-                mobile = mobile, fax = fax)
+                mobile = mobile)
