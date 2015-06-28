@@ -7,7 +7,7 @@ from fixture.application import Application
 fixture = None
 
 @pytest.fixture
-def app(request,):
+def app(request):
     global fixture
     browser = request.config.getoption("--browser")
     base_url = request.config.getoption("--baseUrl")
