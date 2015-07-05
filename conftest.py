@@ -48,11 +48,17 @@ def db(request):
     request.addfinalizer(fin)
     return dbfixture
 
+@pytest.fixture
+def check_ui(request):
+    return request.config.getoption("--check_ui")
+
+
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default = "firefox")
     parser.addoption("--target", action="store", default = "target.json")
     parser.addoption("--username", action="store", default = "target.json[username]")
     parser.addoption("--password", action="store", default = "target.json[password]")
+    parser.addoption("--check_ui", action="store_true")
 
 def pytest_generate_tests(metafunc):
     for fixture in metafunc.fixturenames:
