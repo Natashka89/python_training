@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Администратор'
 import re
-from random import randrange
+from model.contact import Contact
 
-def test_contact_properties(app):
+
+def test_contact_properties(app, db):
     list_contacts = app.contact.get_contact_list()
-    index = randrange(len(list_contacts))
-    contact_from_home_page = app.contact.get_contact_list()[index]
-    contact_from_edit_page = app.contact.get_contact_info_from_edit_page(index)
-    assert contact_from_home_page.first == contact_from_edit_page.first
-    assert contact_from_home_page.last == contact_from_edit_page.last
-    assert contact_from_home_page.all_phones_from_home_page == merge_phones_like_on_home_page(contact_from_edit_page)
-    assert contact_from_home_page.all_emails_from_home_page == merge_emails_like_on_home_page(contact_from_edit_page)
+    def clean(contact):
+        return Contact(id = contact.id, first = contact.first.strip(), middle = contact.middle.strip(), last = contact.last.strip(),
+                       all_phones_from_home_page = merge_phones_like_on_home_page(contact),
+                       all_emails_from_home_page = merge_emails_like_on_home_page(contact))
+    db_list = map(clean, db.get_contact_list())
+    assert sorted(list_contacts, key = Contact.id_or_max) == sorted(db_list, key = Contact.id_or_max)
 
 
 def clear(s):
