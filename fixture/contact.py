@@ -4,6 +4,7 @@ from fixture.class_manager import Manager
 from selenium.webdriver.common.alert import Alert
 from model.contact import Contact
 import re
+from selenium.webdriver.support.ui import Select
 
 class ContactHelper(Manager):
 
@@ -185,3 +186,22 @@ class ContactHelper(Manager):
         mobile = re.search("M: (.*)",text).group(1)
         return Contact(home = home, work = work,
                 mobile = mobile)
+
+    def add_contact_to_group(self, id, group):
+        wd = self.app.wd
+        self.return_to_home_page()
+        self.select_contact_by_id(id)
+        select = Select(wd.find_element_by_xpath("//select[@name='to_group']"))
+        select.select_by_visible_text("%s" % group.name)
+        wd.find_element_by_xpath("//input[@value='Add to']")
+
+    def show_contacts_in_group(self, group):
+        wd = self.app.wd
+        self.return_to_home_page()
+        select = Select(wd.find_element_by_xpath("//select[@name='group']"))
+        select.select_by_visible_text("%s" % group.name)
+
+    def delete_contact_from_group(self, group):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//input[@value='Remove from \"%s\"']" % group.name)
+
